@@ -6,6 +6,16 @@ media.view:
   requirements:
     _entity_access: 'media.view'
 
+media.add_page:
+  path: '/media/add'
+  defaults:
+    _title: 'Add media'
+    _content: '\Drupal\media_entity\Controller\MediaController::addPage'
+  options:
+    _access_mode: 'ANY'
+  requirements:
+    _permission: 'administer media'
+
 media.add:
   path: '/media/add/{media_bundle}'
   defaults:

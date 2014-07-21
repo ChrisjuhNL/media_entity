@@ -42,7 +42,7 @@ interface MediaInterface extends ContentEntityInterface, EntityChangedInterface 
    * @return \Drupal\media_entity\MediaInterface
    *   The called media entity.
    */
-  public function setName($title);
+  public function setName($name);
 
   /**
    * Returns the media creation timestamp.

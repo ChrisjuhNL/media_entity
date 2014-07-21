@@ -84,8 +84,8 @@ class Media extends ContentEntityBase implements MediaInterface {
   /**
    * {@inheritdoc}
    */
-  public function setName($title) {
-    $this->set('name', $title);
+  public function setName($name) {
+    $this->set('name', $name);
     return $this;
   }
 
