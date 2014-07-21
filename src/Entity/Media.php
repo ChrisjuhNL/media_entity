@@ -36,6 +36,7 @@ use Drupal\media_entity\MediaInterface;
  *   revision_table = "media_revision",
  *   revision_data_table = "media_field_revision",
  *   fieldable = TRUE,
+ *   translatable = TRUE,
  *   render_cache = TRUE,
  *   entity_keys = {
  *     "id" = "mid",

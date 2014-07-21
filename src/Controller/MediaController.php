@@ -37,8 +37,7 @@ class MediaController extends ControllerBase {
         array(
           'rel' => $rel,
           'href' => $media->url($rel),
-        )
-      , TRUE);
+        ), TRUE);
 
       if ($rel == 'canonical') {
         // Set the non-aliased canonical path as a default shortlink.
@@ -46,8 +45,7 @@ class MediaController extends ControllerBase {
           array(
             'rel' => 'shortlink',
             'href' => $media->url($rel, array('alias' => TRUE)),
-          )
-        , TRUE);
+          ), TRUE);
       }
     }
 
@@ -95,7 +93,7 @@ class MediaController extends ControllerBase {
     $content = array();
 
     // Only use media bundles the user has access to.
-    foreach ($this->entityManager()->getStorageController('media_bundle')->loadMultiple() as $type) {
+    foreach ($this->entityManager()->getStorage('media_bundle')->loadMultiple() as $type) {
       if ($this->entityManager()->getAccessController('media')->createAccess($type->id)) {
         $content[$type->id] = $type;
       }

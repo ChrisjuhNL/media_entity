@@ -13,6 +13,7 @@ media.add_page:
     _content: '\Drupal\media_entity\Controller\MediaController::addPage'
   options:
     _access_mode: 'ANY'
+    _admin_route: TRUE
   requirements:
     _permission: 'administer media'
 
@@ -21,6 +22,8 @@ media.add:
   defaults:
     _content: '\Drupal\media_entity\Controller\MediaController::add'
     _title_callback: '\Drupal\media_entity\Controller\MediaController::addPageTitle'
+  options:
+    _admin_route: TRUE
   requirements:
     _entity_create_access: 'media:{media_bundle}'
 
@@ -28,6 +31,8 @@ media.edit:
   path: '/media/{media}/edit'
   defaults:
     _entity_form: 'media.edit'
+  options:
+    _admin_route: TRUE
   requirements:
     _entity_access: 'media.update'
 
@@ -35,6 +40,8 @@ media.delete_confirm:
   path: '/media/{media}/delete'
   defaults:
     _entity_form: 'media.delete'
+  options:
+    _admin_route: TRUE
   requirements:
     _entity_access: 'media.delete'
 

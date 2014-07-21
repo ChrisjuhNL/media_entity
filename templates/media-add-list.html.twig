@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Default theme implementation to list node types available for adding content.
+ *
+ * This list is displayed on the Add content admin page.
+ *
+ * Available variables:
+ * - types: A list of content types, each with the following properties:
+ *   - add_link: Link to create a piece of content of this type.
+ *   - description: Description of this type of content.
+ *
+ * @see template_preprocess_media_add_list()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if types is not empty %}
+    <ul class="admin-list">
+        {% for type in types %}
+            <li class="clearfix">
+                {{ type.add_link }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+<p>
+    {% set create_media_bundle = url('admin/structure/media/add') %}
+    {% trans %}
+    You have not created any media bundles yet. Go to the <a href="{{ create_media_bundle }}">media bundle creation page</a> to add a new media bundle.
+    {% endtrans %}
+</p>
+{% endif %}
