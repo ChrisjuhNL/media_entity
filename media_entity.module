@@ -26,3 +26,27 @@ function media_entity_permission() {
 
   return $perms;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function media_entity_theme() {
+  return array(
+    'media_add_list' => array(
+      'variables' => array('content' => NULL),
+      'file' => 'media_entity.pages.inc',
+      'template' => 'media-add-list',
+    ),
+  );
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function media_entity_admin_paths() {
+  $paths = array(
+    'media/add' => TRUE,
+    'media/add/*' => TRUE,
+  );
+  return $paths;
+}
