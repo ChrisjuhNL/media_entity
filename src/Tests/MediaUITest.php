@@ -35,7 +35,7 @@ class MediaUITest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('media_entity', 'field_ui');
+  public static $modules = array('media_entity', 'views', 'field_ui');
 
   /**
    * {@inheritdoc}
@@ -113,16 +113,30 @@ class MediaUITest extends WebTestBase {
     $this->assertUrl('admin/structure/media');
     $this->assertRaw(t('The media bundle %name has been deleted.', array('%name' => $bundle['label'])));
     $this->assertNoRaw(Xss::filterAdmin($bundle['description']));
+  }
 
+  /**
+   * Tests the media actions (add/edit/delete).
+   */
+  public function testMediaWithOnlyOneBundle() {
+    // Assert that media list is empty.
+    $this->drupalGet('admin/content/media');
+    $this->assertResponse(200);
+    $this->assertText('No media items.');
 
     // Tests media add form.
     $edit = array(
       'name[0][value]' => $this->randomString(),
     );
-    $this->drupalPostForm('media/add/default', $edit, t('Save'));
+    $this->drupalPostForm('media/add', $edit, t('Save'));
     $this->assertTitle($edit['name[0][value]'] . ' | Drupal');
     $media_id = \Drupal::entityQuery('media')->execute();
     $media_id = reset($media_id);
+
+    // Assert that media list contains exactly 1 item.
+    $this->drupalGet('admin/content/media');
+    $this->assertResponse(200);
+    $this->assertText($edit['name[0][value]']);
 
     // Tests media edit form.
     $this->drupalGet('media/' . $media_id . '/edit');
@@ -130,10 +144,28 @@ class MediaUITest extends WebTestBase {
     $this->drupalPostForm(NULL, $edit, t('Save'));
     $this->assertTitle($edit['name[0][value]'] . ' | Drupal');
 
+    // Assert that the media list updates after an edit.
+    $this->drupalGet('admin/content/media');
+    $this->assertResponse(200);
+    $this->assertText($edit['name[0][value]']);
+
     // Tests media delete form.
     $this->drupalPostForm('media/' . $media_id . '/delete', array(), t('Delete'));
     $media_id = \Drupal::entityQuery('media')->execute();
     $this->assertFalse($media_id);
+
+    // Assert that the media list is empty after deleting the media item.
+    $this->drupalGet('admin/content/media');
+    $this->assertResponse(200);
+    $this->assertNoText($edit['name[0][value]']);
+    $this->assertText('No media items.');
+  }
+
+  /**
+   * Tests the media actions (add/edit/delete) when multiple media bundles exist.
+   */
+  public function testMediaWithMultipleBundles() {
+    // @TODO: Bundle again from scratch, and then check for multiple bundle at "media/add".
   }
 
 }
