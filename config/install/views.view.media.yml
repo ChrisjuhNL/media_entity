@@ -1,28 +1,16 @@
-base_field: mid
-base_table: media
-core: 8.x
-description: 'Find and manage media.'
+uuid: 11a6b7aa-d2a6-4461-8200-ecc7273e6fff
+langcode: en
 status: true
+dependencies: {  }
+id: media
+label: Media
+module: views
+description: 'Find and manage media.'
+tag: ''
+base_table: media
+base_field: mid
+core: 8.x
 display:
-  page_1:
-    display_plugin: page
-    id: page_1
-    display_title: Page
-    position: 1
-    display_options:
-      path: admin/content/media
-      menu:
-        type: tab
-        title: Media
-        description: 'Find and manage media.'
-        name: admin
-        weight: 2
-        context: '0'
-      defaults:
-        filters: true
-        filter_groups: true
-        exposed_form: true
-        exposed_form_options: true
   default:
     display_plugin: default
     id: default
@@ -81,7 +69,6 @@ display:
           grouping: {  }
           row_class: ''
           default_row_class: true
-          row_class_special: true
           override: true
           sticky: false
           caption: ''
@@ -93,7 +80,6 @@ display:
             bundle: bundle
             created: created
             changed: changed
-            status: status
           info:
             mid:
               sortable: false
@@ -130,15 +116,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            status:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
           default: '-1'
-          empty_table: false
+          empty_table: true
       row:
         type: 'entity:media'
         options:
@@ -453,11 +432,44 @@ display:
       title: Media
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          dependencies:
+            module:
+              - views
+          empty: true
+          tokenize: false
+          content: 'No media items.'
+          plugin_id: text_custom
+          provider: views
       relationships: {  }
       arguments: {  }
-label: Media
-module: views
-id: media
-tag: ''
-langcode: en
+      field_langcode: '***CURRENT_LANGUAGE***'
+      field_langcode_add_to_query: null
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: Page
+    position: 1
+    display_options:
+      path: admin/content/media
+      menu:
+        type: tab
+        title: Media
+        description: 'Find and manage media.'
+        name: admin
+        weight: 2
+        context: '0'
+      defaults:
+        filters: true
+        filter_groups: true
+        exposed_form: true
+        exposed_form_options: true
+      field_langcode: '***CURRENT_LANGUAGE***'
+      field_langcode_add_to_query: null
