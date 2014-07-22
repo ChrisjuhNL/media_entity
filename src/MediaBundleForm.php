@@ -58,7 +58,6 @@ class MediaBundleForm extends EntityForm {
       '#required' => TRUE,
       '#size' => 30,
     );
-    var_dump($bundle);
 
     $form['description'] = array(
       '#title' => t('Description'),
