@@ -87,7 +87,7 @@ class MediaController extends ControllerBase {
    *   A render array for a list of the bundles that can be added; however,
    *   if there is only one defined for the site, the function
    *   redirects to the media add page for that one type and does not return
-   *   at all.
+   *   at all or returns RedirectResponse.
    */
   public function addPage() {
     $content = array();
@@ -114,8 +114,8 @@ class MediaController extends ControllerBase {
   /**
    * Page callback: Provides the media submission form.
    *
-   * @param MediaBundleInterface $media_bundle
-   *   The media bundle object for the submitted node.
+   * @param \Drupal\media_entity\MediaBundleInterface $media_bundle
+   *   The media bundle object for the submitted media.
    *
    * @return array
    *   A media submission form.
