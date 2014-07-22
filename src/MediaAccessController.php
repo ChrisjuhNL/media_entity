@@ -34,6 +34,8 @@ class MediaAccessController extends EntityAccessController {
         return $account->hasPermission('delete media');
         break;
     }
+
+    return FALSE;
   }
 
   /**

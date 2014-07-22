@@ -9,7 +9,6 @@ namespace Drupal\media_entity;
 
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Provides an interface defining a media entity.

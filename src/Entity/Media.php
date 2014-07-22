@@ -67,7 +67,6 @@ class Media extends ContentEntityBase implements MediaInterface {
    */
   const NOT_PUBLISHED = 0;
 
-
   /**
    * {@inheritdoc}
    */
