@@ -21,7 +21,14 @@ class MediaUITest extends WebTestBase {
   /**
    * @var \Drupal\media_entity\MediaBundleInterface
    */
-  protected $media_bundle;
+  protected $mediaBundle;
+
+  /**
+   * The test user.
+   *
+   * @var string
+   */
+  protected $adminUser;
 
   /**
    * Modules to enable.
@@ -33,9 +40,9 @@ class MediaUITest extends WebTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  public function setUp() {
     parent::setUp();
-    $this->admin_user = $this->drupalCreateUser(array(
+    $this->adminUser = $this->drupalCreateUser(array(
       'administer media',
       'administer media fields',
       'administer media form display',
@@ -46,14 +53,14 @@ class MediaUITest extends WebTestBase {
       'update media',
       'delete media',
     ));
-    $this->drupalLogin($this->admin_user);
-    $this->media_bundle = entity_create('media_bundle', array(
+    $this->drupalLogin($this->adminUser);
+    $this->mediaBundle = entity_create('media_bundle', array(
       'id' => 'default',
       'label' => 'Unnamed',
       'type' => 'Unknown',
       'description' => 'Media description',
     ));
-    $this->media_bundle->save();
+    $this->mediaBundle->save();
   }
 
   /**
@@ -63,8 +70,8 @@ class MediaUITest extends WebTestBase {
     $this->drupalGet('admin/structure/media');
     $this->assertResponse(200);
 
-    $this->assertRaw(String::checkPlain($this->media_bundle->label()));
-    $this->assertRaw(Xss::filterAdmin($this->media_bundle->description));
+    $this->assertRaw(String::checkPlain($this->mediaBundle->label()));
+    $this->assertRaw(Xss::filterAdmin($this->mediaBundle->getDescription()));
     $this->assertLinkByHref('admin/structure/media/add');
     $this->assertLinkByHref('admin/structure/media/manage/default');
     $this->assertLinkByHref('admin/structure/media/manage/default/fields');

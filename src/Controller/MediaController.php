@@ -40,7 +40,7 @@ class MediaController extends ControllerBase {
         ), TRUE);
 
       if ($rel == 'canonical') {
-        // Set the non-aliased canonical path as a default shortlink.
+        // Set the non-aliased canonical path as a default short-link.
         $build['#attached']['drupal_add_html_head_link'][] = array(
           array(
             'rel' => 'shortlink',

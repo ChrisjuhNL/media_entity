@@ -21,19 +21,21 @@ class MediaAccessController extends EntityAccessController {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, $langcode, AccountInterface $account) {
+    $return = FALSE;
     switch ($operation) {
       case 'view':
-        return $account->hasPermission('view media');
+        $return = $account->hasPermission('view media');
         break;
 
       case 'update':
-        return $account->hasPermission('update media');
+        $return = $account->hasPermission('update media');
         break;
 
       case 'delete':
-        return $account->hasPermission('delete media');
+        $return = $account->hasPermission('delete media');
         break;
     }
+    return $return;
   }
 
   /**
