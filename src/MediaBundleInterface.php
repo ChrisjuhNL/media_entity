@@ -29,20 +29,26 @@ interface MediaBundleInterface extends ConfigEntityInterface {
    *   The Media entity.
    *
    * @return string|bool
-   *   Returns the label.
+   *   Returns the label of the bundle that entity belongs to.
    */
   public static function getLabel(MediaInterface $media);
 
   /**
-   * {@inheritdoc}
+   * Returns the media bundle ID.
+   *
+   * @param int $id
+   *   The Media bundle ID.
+   *
+   * @return bool
+   *   Returns the media bundle ID.
    */
   public static function exists($id);
 
   /**
-   * Returns description.
+   * Returns the Media bundle description.
    *
    * @return string
-   *   Returns description.
+   *   Returns the Media bundle description.
    */
   public function getDescription();
 }

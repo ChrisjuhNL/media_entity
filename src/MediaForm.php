@@ -41,13 +41,10 @@ class MediaForm extends ContentEntityForm {
     );
 
     // If this is a new media, fill in the default values.
-    // @TODO: Only one value to iterate over? Doesn't make sense like this.
     if ($media->isNew()) {
-      foreach (array('status') as $key) {
-        // Multistep media forms might have filled in something already.
-        if ($media->$key->isEmpty()) {
-          $media->$key = (int) in_array($key, $this->settings['options']);
-        }
+      // Multistep media forms might have filled in something already.
+      if ($media->status->isEmpty()) {
+        $media->status = (int) in_array('status', $this->settings['options']);
       }
       $media->setPublisherId($this->currentUser()->id());
       $media->setCreatedTime(REQUEST_TIME);
