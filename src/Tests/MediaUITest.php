@@ -122,7 +122,6 @@ class MediaUITest extends WebTestBase {
     // Test if the media list contains exactly 1 media bundle.
     $this->drupalGet('admin/content/media');
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
     $this->assertText($edit['name[0][value]']);
 
     // Tests media edit form.
@@ -134,7 +133,6 @@ class MediaUITest extends WebTestBase {
     // Assert that the media list updates after an edit.
     $this->drupalGet('admin/content/media');
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
     $this->assertText($edit['name[0][value]']);
 
     // Tests media delete form.
@@ -245,7 +243,6 @@ class MediaUITest extends WebTestBase {
     // Go to media item list.
     $this->drupalGet('admin/content/media');
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
 
     // Assert that all available media items are in the list.
     $this->assertText($first_media_item['name[0][value]']);
@@ -256,14 +253,12 @@ class MediaUITest extends WebTestBase {
     // Filter for each bundle and assert that the list has been updated.
     $this->drupalGet('admin/content/media', array('query' => array('bundle' => $first_media_bundle['id'])));
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
     $this->assertText($first_media_item['name[0][value]']);
     $this->assertText($first_media_bundle['label']);
     $this->assertNoText($second_media_item['name[0][value]']);
 
     $this->drupalGet('admin/content/media', array('query' => array('bundle' => $second_media_bundle['id'])));
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
     $this->assertNoText($first_media_item['name[0][value]']);
     $this->assertText($second_media_item['name[0][value]']);
     $this->assertText($second_media_bundle['label']);
@@ -271,7 +266,6 @@ class MediaUITest extends WebTestBase {
     // Filter all and check for all items again.
     $this->drupalGet('admin/content/media', array('query' => array('bundle' => 'All')));
     $this->assertResponse(200);
-    debug(strip_tags($this->getRawContent()));
     $this->assertText($first_media_item['name[0][value]']);
     $this->assertText($first_media_bundle['label']);
     $this->assertText($second_media_item['name[0][value]']);

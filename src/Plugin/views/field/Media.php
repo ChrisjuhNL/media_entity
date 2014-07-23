@@ -94,7 +94,6 @@ class Media extends FieldPluginBase {
    */
   public function render(ResultRow $values) {
     $value = $this->getValue($values);
-    debug($value);
     return $this->renderLink($this->sanitizeValue($value), $values);
   }
 
