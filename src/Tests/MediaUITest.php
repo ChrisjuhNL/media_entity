@@ -24,6 +24,11 @@ class MediaUITest extends WebTestBase {
   protected $mediaBundle;
 
   /**
+   * @var \Drupal\media_entity\MediaBundleInterface
+   */
+  protected $mediaBundleTwo;
+
+  /**
    * The test user.
    *
    * @var string
@@ -80,13 +85,8 @@ class MediaUITest extends WebTestBase {
     $this->assertLinkByHref('admin/structure/media/manage/default/delete');
 
     // Tests media bundle add form.
-    $bundle = array(
-      'id' => strtolower($this->randomName()),
-      'label' => $this->randomString(),
-      'description' => $this->randomString(),
-      'type' => $this->randomString(),
-    );
-    $this->drupalPostForm('admin/structure/media/add', $bundle, t('Save media bundle'));
+    $bundle = $this->createMediaBundle();
+
     $this->assertUrl('admin/structure/media');
     $this->assertRaw(String::checkPlain($bundle['label']));
     $this->assertRaw(Xss::filterAdmin($bundle['description']));
@@ -96,9 +96,10 @@ class MediaUITest extends WebTestBase {
     $this->assertFieldByName('label', $bundle['label']);
     $this->assertFieldByName('description', $bundle['description']);
     $this->assertFieldByName('type', $bundle['type']);
-    $bundle['label'] = $this->randomString();
-    $bundle['description'] = $this->randomString();
-    $bundle['type'] = $this->randomString();
+
+    $bundle['label'] = $this->randomName();
+    $bundle['description'] = $this->randomName();
+    $bundle['type'] = $this->randomName();
     $this->drupalPostForm(NULL, $bundle, t('Save media bundle'));
     $this->drupalGet('admin/structure/media/manage/' . $bundle['id']);
     $this->assertFieldByName('label', $bundle['label']);
@@ -124,9 +125,15 @@ class MediaUITest extends WebTestBase {
     $this->assertResponse(200);
     $this->assertText('No media items.');
 
-    // Tests media add form.
+    // Test when adding new media it automatically redirect to new media bundle page
+    // Should only happen when there is only 1 media bundle available
+    $this->drupalGet('media/add');
+    $this->assertResponse(200);
+    $this->assertUrl('media/add/' . $this->mediaBundle->id());
+
+    // Tests media item add form.
     $edit = array(
-      'name[0][value]' => $this->randomString(),
+      'name[0][value]' => $this->randomName(),
     );
     $this->drupalPostForm('media/add', $edit, t('Save'));
     $this->assertTitle($edit['name[0][value]'] . ' | Drupal');
@@ -140,7 +147,7 @@ class MediaUITest extends WebTestBase {
 
     // Tests media edit form.
     $this->drupalGet('media/' . $media_id . '/edit');
-    $edit['name[0][value]'] = $this->randomString();
+    $edit['name[0][value]'] = $this->randomName();
     $this->drupalPostForm(NULL, $edit, t('Save'));
     $this->assertTitle($edit['name[0][value]'] . ' | Drupal');
 
@@ -166,6 +173,25 @@ class MediaUITest extends WebTestBase {
    */
   public function testMediaWithMultipleBundles() {
     // @TODO: Bundle again from scratch, and then check for multiple bundle at "media/add".
+
+    $mediaBundle = $this->createMediaBundle();
+  }
+
+
+  public function createMediaBundle() {
+    $this->drupalGet('admin/structure/media/add');
+
+    $edit = array(
+      'id' => strtolower($this->randomName()),
+      'label' => $this->randomName(),
+      'type' => $this->randomName(),
+      'description' => $this->randomName(),
+    );
+
+    $this->drupalPostForm('admin/structure/media/add', $edit, t('Save media bundle'));
+
+
+    return $edit;
   }
 
 }
