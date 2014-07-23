@@ -59,7 +59,7 @@ class MediaUITest extends WebTestBase {
     $bundle = $this->createMediaBundle();
 
     // Check if all pages exist
-    // TODO: Add new media item & add new pages: "media/{id}/edit", "media/{id}/delete" & "media/{id}"
+    // TODO: Add new media item & add new pages: "media/{id}/edit", "media/{id}/delete" & "media/{id}
     $this->assertLinkByHref('media/add/' . $bundle['id']);
     $this->assertLinkByHref('admin/structure/media/add');
     $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id']);

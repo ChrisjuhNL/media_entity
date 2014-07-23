@@ -56,9 +56,7 @@ function media_entity_views_data() {
     'title' => t('Name'),
     'help' => t('The media title.'),
     'field' => array(
-      // TODO: Create support for something smarter (linking to media, ...) -
-      // similar to \Drupal\node\Plugin\views\field\Node.
-      'id' => 'standard',
+      'id' => 'media',
     ),
     'sort' => array(
       'id' => 'standard',
@@ -164,6 +162,30 @@ function media_entity_views_data() {
   );
 
   // TODO: Add "link to media", "link to edit", "delete link", "path" fields.
+
+  $data['media']['view_node'] = array(
+    'field' => array(
+      'title' => t('Link to content'),
+      'help' => t('Provide a simple link to the content.'),
+      'id' => 'media_link',
+    ),
+  );
+
+  $data['media']['edit_node'] = array(
+    'field' => array(
+      'title' => t('Link to edit content'),
+      'help' => t('Provide a simple link to edit the content.'),
+      'id' => 'media_link_edit',
+    ),
+  );
+
+  $data['media']['delete_node'] = array(
+    'field' => array(
+      'title' => t('Link to delete content'),
+      'help' => t('Provide a simple link to delete the content.'),
+      'id' => 'media_link_delete',
+    ),
+  );
 
   // Bogus fields for aliasing purposes.
 
