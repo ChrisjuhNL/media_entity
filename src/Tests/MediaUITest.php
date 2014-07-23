@@ -19,16 +19,6 @@ use Drupal\simpletest\WebTestBase;
 class MediaUITest extends WebTestBase {
 
   /**
-   * @var \Drupal\media_entity\MediaBundleInterface
-   */
-  protected $mediaBundle;
-
-  /**
-   * @var \Drupal\media_entity\MediaBundleInterface
-   */
-  protected $mediaBundleTwo;
-
-  /**
    * The test user.
    *
    * @var string
@@ -59,37 +49,24 @@ class MediaUITest extends WebTestBase {
       'delete media',
     ));
     $this->drupalLogin($this->adminUser);
-    $this->mediaBundle = entity_create('media_bundle', array(
-      'id' => 'default',
-      'label' => 'Unnamed',
-      'type' => 'Unknown',
-      'description' => 'Media description',
-    ));
-    $this->mediaBundle->save();
   }
 
   /**
    * Tests a media bundle administration.
    */
   public function testMediaBundles() {
-    $this->drupalGet('admin/structure/media');
-    $this->assertResponse(200);
-
-    $this->assertRaw(String::checkPlain($this->mediaBundle->label()));
-    $this->assertRaw(Xss::filterAdmin($this->mediaBundle->getDescription()));
-    $this->assertLinkByHref('admin/structure/media/add');
-    $this->assertLinkByHref('admin/structure/media/manage/default');
-    $this->assertLinkByHref('admin/structure/media/manage/default/fields');
-    $this->assertLinkByHref('admin/structure/media/manage/default/form-display');
-    $this->assertLinkByHref('admin/structure/media/manage/default/display');
-    $this->assertLinkByHref('admin/structure/media/manage/default/delete');
-
-    // Tests media bundle add form.
+    // Test and create one media bundle
     $bundle = $this->createMediaBundle();
 
-    $this->assertUrl('admin/structure/media');
-    $this->assertRaw(String::checkPlain($bundle['label']));
-    $this->assertRaw(Xss::filterAdmin($bundle['description']));
+    // Check if all pages exist
+    // TODO: Add new media item & add new pages: "media/{id}/edit", "media/{id}/delete" & "media/{id}"
+    $this->assertLinkByHref('media/add/' . $bundle['id']);
+    $this->assertLinkByHref('admin/structure/media/add');
+    $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id']);
+    $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id'] . '/fields');
+    $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id'] . '/form-display');
+    $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id'] . '/display');
+    $this->assertLinkByHref('admin/structure/media/manage/' . $bundle['id'] . '/delete');
 
     // Tests media bundle edit form.
     $this->drupalGet('admin/structure/media/manage/' . $bundle['id']);
@@ -120,6 +97,9 @@ class MediaUITest extends WebTestBase {
    * Tests the media actions (add/edit/delete).
    */
   public function testMediaWithOnlyOneBundle() {
+    // Test and create one media bundle
+    $bundle = $this->createMediaBundle();
+
     // Assert that media list is empty.
     $this->drupalGet('admin/content/media');
     $this->assertResponse(200);
@@ -129,7 +109,7 @@ class MediaUITest extends WebTestBase {
     // Should only happen when there is only 1 media bundle available
     $this->drupalGet('media/add');
     $this->assertResponse(200);
-    $this->assertUrl('media/add/' . $this->mediaBundle->id());
+    $this->assertUrl('media/add/' . $bundle['id']);
 
     // Tests media item add form.
     $edit = array(
@@ -140,7 +120,7 @@ class MediaUITest extends WebTestBase {
     $media_id = \Drupal::entityQuery('media')->execute();
     $media_id = reset($media_id);
 
-    // Assert that media list contains exactly 1 item.
+    // Test if the media list contains exactly 1 media bundle.
     $this->drupalGet('admin/content/media');
     $this->assertResponse(200);
     $this->assertText($edit['name[0][value]']);
@@ -169,18 +149,38 @@ class MediaUITest extends WebTestBase {
   }
 
   /**
-   * Tests the media actions (add/edit/delete) when multiple media bundles exist.
+   * Tests if the "media/add" page gives you a selecting option if there are one or more media bundles available.
    */
   public function testMediaWithMultipleBundles() {
-    // @TODO: Bundle again from scratch, and then check for multiple bundle at "media/add".
+    // Tests and creates the first media bundle
+    $firstMediaBundle = $this->createMediaBundle();
 
-    $mediaBundle = $this->createMediaBundle();
+    // Test and create a second media bundle
+    $secondMediaBundle = $this->createMediaBundle();
+
+    // Test if media/add displays two media bundle options
+    $this->drupalGet('media/add');
+
+    // Checks for the first media bundle
+    $this->assertRaw(String::checkPlain($firstMediaBundle['label']));
+    $this->assertRaw(Xss::filterAdmin($firstMediaBundle['description']));
+
+    // Checks for the second media bundle
+    $this->assertRaw(String::checkPlain($secondMediaBundle['label']));
+    $this->assertRaw(Xss::filterAdmin($secondMediaBundle['description']));
+
+    // Continue testing media bundle filter
+    //$this->doTestMediaBundleFilter($firstMediaBundle, $secondMediaBundle);
   }
 
-
+  /**
+   * Creates and tests a new media bundle.
+   *
+   * @return array
+   *   Returns the media bundle fields.
+   */
   public function createMediaBundle() {
-    $this->drupalGet('admin/structure/media/add');
-
+    // Generates and holds all media bundle fields
     $edit = array(
       'id' => strtolower($this->randomName()),
       'label' => $this->randomName(),
@@ -188,8 +188,14 @@ class MediaUITest extends WebTestBase {
       'description' => $this->randomName(),
     );
 
+    // Create new media bundle
     $this->drupalPostForm('admin/structure/media/add', $edit, t('Save media bundle'));
 
+    // Check if media bundle is succesfully created
+    $this->drupalGet('admin/structure/media');
+    $this->assertResponse(200);
+    $this->assertRaw(String::checkPlain($edit['label']));
+    $this->assertRaw(Xss::filterAdmin($edit['description']));
 
     return $edit;
   }
