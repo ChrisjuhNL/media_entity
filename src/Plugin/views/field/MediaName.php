@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\media_entity\Plugin\views\field\MediaName.
+ * Contains Drupal\media_entity\Plugin\views\field\Media.
  */
 
 namespace Drupal\media_entity\Plugin\views\field;
@@ -13,9 +13,10 @@ use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 
 /**
- * Field handler to provide simple renderer that allows linking to a media.
+ * Field handler to provide simple renderer that allows linking to a media item.
  * Definition terms:
- * - link_to_media default: Should this field have the checkbox "link to media" enabled by default.
+ * - link_to_media default: Should this field have the checkbox "link to media"
+ *   enabled by default.
  *
  * @ingroup views_field_handlers
  *
@@ -29,12 +30,15 @@ class MediaName extends FieldPluginBase {
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
 
-    // Don't add the additional fields to groupby
+    // Don't add the additional fields to groupby.
     if (!empty($this->options['link_to_media'])) {
       $this->additional_fields['mid'] = array('table' => 'media', 'field' => 'mid');
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['link_to_media_name'] = array('default' => isset($this->definition['link_to_media_name default']) ? $this->definition['link_to_media_name default'] : FALSE, 'bool' => TRUE);
@@ -42,7 +46,7 @@ class MediaName extends FieldPluginBase {
   }
 
   /**
-   * Provide link to media option
+   * Provide link to media option.
    */
   public function buildOptionsForm(&$form, &$form_state) {
     $form['link_to_media_name'] = array(
@@ -56,7 +60,7 @@ class MediaName extends FieldPluginBase {
   }
 
   /**
-   * Prepares link to the media.
+   * Prepares link to the media item.
    *
    * @param string $data
    *   The XSS safe string for the link text.
@@ -72,7 +76,7 @@ class MediaName extends FieldPluginBase {
         $this->options['alter']['make_link'] = TRUE;
         $this->options['alter']['path'] = "media/" . $this->getValue($values, 'mid');
         if (isset($this->aliases['langcode'])) {
-          $languages = language_list();
+          $languages = \Drupal::languageManager()->getLanguages();
           $langcode = $this->getValue($values, 'langcode');
           if (isset($languages[$langcode])) {
             $this->options['alter']['language'] = $languages[$langcode];

@@ -86,8 +86,8 @@ class MediaController extends ControllerBase {
    * @return array
    *   A render array for a list of the bundles that can be added; however,
    *   if there is only one defined for the site, the function
-   *   redirects to the media add page for that one type and does not return
-   *   at all or returns RedirectResponse.
+   *   redirects to the media add page for that one type and returns
+   *   RedirectResponse.
    */
   public function addPage() {
     $content = array();

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\media_entity\MediaForm.
+ * Contains Drupal\media_entity\MediaForm.
  */
 
 namespace Drupal\media_entity;
