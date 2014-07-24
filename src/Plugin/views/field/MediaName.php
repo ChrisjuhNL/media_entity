@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\media_entity\Plugin\views\field\Media.
+ * Definition of Drupal\media_entity\Plugin\views\field\MediaName.
  */
 
 namespace Drupal\media_entity\Plugin\views\field;
@@ -19,9 +19,9 @@ use Drupal\views\Plugin\views\field\FieldPluginBase;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("media")
+ * @ViewsField("media_name")
  */
-class Media extends FieldPluginBase {
+class MediaName extends FieldPluginBase {
 
   /**
    * Overrides \Drupal\views\Plugin\views\field\FieldPluginBase::init().
@@ -37,7 +37,7 @@ class Media extends FieldPluginBase {
 
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['link_to_media'] = array('default' => isset($this->definition['link_to_media default']) ? $this->definition['link_to_media default'] : FALSE, 'bool' => TRUE);
+    $options['link_to_media_name'] = array('default' => isset($this->definition['link_to_media_name default']) ? $this->definition['link_to_media_name default'] : FALSE, 'bool' => TRUE);
     return $options;
   }
 
@@ -45,11 +45,11 @@ class Media extends FieldPluginBase {
    * Provide link to media option
    */
   public function buildOptionsForm(&$form, &$form_state) {
-    $form['link_to_media'] = array(
+    $form['link_to_media_name'] = array(
       '#title' => t('Link this field to the original piece of content'),
       '#description' => t("Enable to override this field's links."),
       '#type' => 'checkbox',
-      '#default_value' => !empty($this->options['link_to_media']),
+      '#default_value' => !empty($this->options['link_to_media_name']),
     );
 
     parent::buildOptionsForm($form, $form_state);
@@ -67,7 +67,7 @@ class Media extends FieldPluginBase {
    *   Returns a string for the link text.
    */
   protected function renderLink($data, ResultRow $values) {
-    if (!empty($this->options['link_to_media']) && !empty($this->additional_fields['mid'])) {
+    if (!empty($this->options['link_to_media_name']) && !empty($this->additional_fields['mid'])) {
       if ($data !== NULL && $data !== '') {
         $this->options['alter']['make_link'] = TRUE;
         $this->options['alter']['path'] = "media/" . $this->getValue($values, 'mid');

@@ -56,7 +56,7 @@ function media_entity_views_data() {
     'title' => t('Name'),
     'help' => t('The media title.'),
     'field' => array(
-      'id' => 'media',
+      'id' => 'media_name',
     ),
     'sort' => array(
       'id' => 'standard',
