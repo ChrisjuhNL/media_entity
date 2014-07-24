@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Theme functions for the media_entity module.
+ */
 
 /**
  * Prepares variables for list of available media bundles.
